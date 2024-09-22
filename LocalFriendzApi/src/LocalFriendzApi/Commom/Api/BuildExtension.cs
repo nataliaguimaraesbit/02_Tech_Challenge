@@ -6,6 +6,7 @@ using LocalFriendzApi.Core.Logging;
 using LocalFriendzApi.Infrastructure.Data;
 using LocalFriendzApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Npgsql; // Adicione esta linha para usar o Npgsql
 
 namespace LocalFriendzApi.Commom.Api
 {
@@ -13,7 +14,8 @@ namespace LocalFriendzApi.Commom.Api
     {
         public static void AddConfiguration(this WebApplicationBuilder builder)
         {
-            ApiConfiguration.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+            // Alterando a string de conexão para PostgreSQL
+            ApiConfiguration.ConnectionString = builder.Configuration.GetConnectionString("PostgreSqlConnection") ?? string.Empty;
         }
 
         public static void AddDataContexts(this WebApplicationBuilder builder)
@@ -23,7 +25,8 @@ namespace LocalFriendzApi.Commom.Api
                 .AddDbContext<AppDbContext>(
                     x =>
                     {
-                        x.UseSqlServer(ApiConfiguration.ConnectionString);
+                        // Alterando para usar PostgreSQL
+                        x.UseNpgsql(ApiConfiguration.ConnectionString);
                     });
 
         }

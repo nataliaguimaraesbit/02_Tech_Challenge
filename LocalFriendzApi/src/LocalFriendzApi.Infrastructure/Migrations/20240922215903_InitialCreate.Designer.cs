@@ -3,55 +3,40 @@ using System;
 using LocalFriendzApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace LocalFriendzApi.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240626194609_V1")]
-    partial class V1
+    [Migration("20240922215903_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LocalFriendzApi.Core.Models.AreaCode", b =>
-                {
-                    b.Property<Guid>("IdAreaCode")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id_area_code");
-
-                    b.Property<string>("CodeRegion")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("VARCHAR")
-                        .HasColumnName("code_region");
-
-                    b.HasKey("IdAreaCode");
-
-                    b.ToTable("TB_AREA_CODE", (string)null);
-                });
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("LocalFriendzApi.Core.Models.Contact", b =>
                 {
                     b.Property<Guid>("IdContact")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_contact");
 
-                    b.Property<Guid?>("AreaCodeIdAreaCode")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("DDD")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("DDD");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -73,18 +58,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
 
                     b.HasKey("IdContact");
 
-                    b.HasIndex("AreaCodeIdAreaCode");
-
                     b.ToTable("TB_CONTACT", (string)null);
-                });
-
-            modelBuilder.Entity("LocalFriendzApi.Core.Models.Contact", b =>
-                {
-                    b.HasOne("LocalFriendzApi.Core.Models.AreaCode", "AreaCode")
-                        .WithMany()
-                        .HasForeignKey("AreaCodeIdAreaCode");
-
-                    b.Navigation("AreaCode");
                 });
 #pragma warning restore 612, 618
         }

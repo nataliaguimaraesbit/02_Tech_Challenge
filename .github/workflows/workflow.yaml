@@ -19,10 +19,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./src/src/LocalFriendzApi/LocalFriendzApi.csproj
+      run: dotnet restore ./src/LocalFriendzApi/LocalFriendzApi.csproj
 
     - name: Build
-      run: dotnet build ./src/src/LocalFriendzApi/LocalFriendzApi.csproj --configuration Release --no-restore
+      run: dotnet build ./src/LocalFriendzApi/LocalFriendzApi.csproj --configuration Release --no-restore
 
     - name: Run tests
-      run: dotnet test ./src/src/LocalFriendzApi.Test/LocalFriendzApi.IntegrationTests.csproj --configuration Release --no-build --verbosity normal
+      run: dotnet test ./src/LocalFriendzApi.Test/LocalFriendzApi.IntegrationTests.csproj --configuration Release --no-build --verbosity normal

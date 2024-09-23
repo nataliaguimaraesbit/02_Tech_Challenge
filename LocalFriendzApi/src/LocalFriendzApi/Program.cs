@@ -28,4 +28,5 @@ app.UseHttpsRedirection();
 
 app.Run();
 
+//Exporte da program
 public partial class Program { }

@@ -6,7 +6,6 @@ using LocalFriendzApi.Core.Logging;
 using LocalFriendzApi.Infrastructure.Data;
 using LocalFriendzApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Npgsql; // Adicione esta linha para usar o Npgsql
 
 namespace LocalFriendzApi.Commom.Api
 {

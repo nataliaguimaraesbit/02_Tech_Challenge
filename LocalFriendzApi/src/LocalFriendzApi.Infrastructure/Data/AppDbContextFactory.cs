@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LocalFriendzApi.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
-using LocalFriendzApi.Infrastructure.Data;
 
 namespace LocalFriendzApi.Infrastructure
 {
@@ -10,7 +9,6 @@ namespace LocalFriendzApi.Infrastructure
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            // Ajustar o caminho para o arquivo appsettings.json correto
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../LocalFriendzApi"))
                 .AddJsonFile("appsettings.json")

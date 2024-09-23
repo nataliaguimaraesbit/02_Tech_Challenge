@@ -3,7 +3,7 @@ name: CI Workflow
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -27,5 +27,8 @@ jobs:
     - name: Build
       run: dotnet build ./LocalFriendzApi/src/LocalFriendzApi/LocalFriendzApi.csproj --configuration Release --no-restore
 
+    - name: Build Test Project
+      run: dotnet build ./LocalFriendzApi/src/LocalFriendzApi.Test/LocalFriendzApi.IntegrationTests.csproj --configuration Release --no-restore
+
     - name: Run tests
-      run: dotnet test ./LocalFriendzApi/src/LocalFriendzApi.Test/LocalFriendzApi.IntegrationTests.csproj --configuration Release --no-build --verbosity normal
+      run: dotnet test ./LocalFriendzApi/src/LocalFriendzApi.Test/LocalFriendzApi.IntegrationTests.csproj --configuration Release --no-build --verbosity diagnostic

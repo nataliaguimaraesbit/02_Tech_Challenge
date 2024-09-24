@@ -14,6 +14,7 @@ namespace LocalFriendzApi.Endpoints
             var contactGroup = app.MapGroup("/Contact")
                                   .WithTags("Contact");
 
+
             #region Endpoints
 
             contactGroup.MapPost("api/create-contact", Create)

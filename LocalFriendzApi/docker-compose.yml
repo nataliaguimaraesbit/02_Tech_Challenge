@@ -1,24 +1,58 @@
-version: '3.8'
-
 services:
-  app:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - architectchallenge
+
+  web:
     build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5005:5005"
-      - "5006:5006"
-    environment:
-      - ConnectionStrings__PostgreSqlConnection=Host=db;Database=DB_FIAP_ARQUITETO;Username=postgres;Password=Teste@123
-    depends_on:
-      - db
-
-  db:
-    image: postgres:15
+      dockerfile: src/LocalFriendzApi/Dockerfile
+    container_name: dotnet_app
     restart: always
-    environment:
-      POSTGRES_DB: DB_FIAP_ARQUITETO
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Teste@123
     ports:
-      - "5432:5432"
+      - "5005:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=localhost;Database=DB_FIAP_ARQUITETO;User=sa;Password=Your_password123;TrustServerCertificate=True"
+    depends_on:
+      - mssql
+    networks:
+      - architectchallenge
+
+  prometheus:
+    image: prom/prometheus:v2.49.1
+    ports:
+      - "9090:9090"
+    networks:
+      - architectchallenge
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - architectchallenge
+    depends_on:
+      - prometheus
+
+networks:
+  architectchallenge:
+    driver: bridge
+
+
+volumes:
+  grafana-storage:
